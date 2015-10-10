@@ -14,6 +14,10 @@ class User(AbstractBaseUser):
     is_admin    = models.BooleanField(default=False)
     is_patient  = models.BooleanField(default=False) 
     type_cancer = models.CharField(max_length=200)
+    expectancy  = models.CharField(max_length=200)
+    treatment   = models.CharField(max_length=200)
+    side_effects= models.CharField(max_length=200)
+
     
 
     USERNAME_FIELD = 'email'
