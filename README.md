@@ -1,2 +1,9 @@
 # hackCancer
-This read me is not important. It is there just to annoy Gabby! 
+
+#### Dependencies:
+Django
+
+pip install requirements.txt
+
+#### Run the server:
+python manage.py runserver
