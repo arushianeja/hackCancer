@@ -1,0 +1,41 @@
+from django.db import models
+
+# Create your models here.
+from django.contrib.auth.models import AbstractBaseUser
+
+class User(AbstractBaseUser):
+    """
+    Custom user class.
+    """
+    name = models.CharField(max_length=200)
+    email       = models.EmailField('email address', unique=True, db_index=True)
+    joined      = models.DateTimeField(auto_now_add=True)
+    is_active   = models.BooleanField(default=True)
+    is_admin    = models.BooleanField(default=False)
+    is_patient  = models.BooleanField(default=False) 
+    type_cancer = models.CharField(max_length=200)
+    
+
+    USERNAME_FIELD = 'email'
+
+    def __unicode__(self):
+        return self.email
+    
+class EventType(models.Model):
+    name        = models.CharField(max_length=200)
+
+class Event(models.Model):
+    time        = models.DateTimeField(auto_now_add=True)
+    type        = models.ForeignKey(EventType)
+    user        = models.ForeignKey(User)
+    
+class Genetic_info(models.Model):
+    chr        = models.IntegerField()
+    pos        = models.IntegerField()
+    users      = models.ManyToManyField(User)
+    gene       = models.CharField(max_length=200) 
+
+# class Choice(models.Model):
+#     question = models.ForeignKey(Question)
+#     choice_text = models.CharField(max_length=200)
+#     votes = models.IntegerField(default=0)
