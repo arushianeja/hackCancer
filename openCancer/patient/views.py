@@ -2,13 +2,40 @@ from django.shortcuts import render
 import datetime
 import json
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from patient.models import *
 from django.core import serializers
+from django import forms
+
 
 # def current_datetime(request):
 #     now = datetime.datetime.now()
 #     html = "<html><body>It is now %s.</body></html>" % now
 #     return HttpResponse(html)
+
+@csrf_exempt
+def incoming_data(request):
+
+    data = "";
+    if request.method == 'POST':
+        data += request.body
+        json_data = json.loads(data)
+        print json_data["name"]
+        try:
+            user = User(name = json_data["name"],
+                        is_male = json_data["gender"],
+                        ethnicity = json_data["ethnicity"],
+                        type_cancer = json_data["cancer type"],
+                        expectancy = json_data["expectancy"],
+                        treatment = json_data["treatment"])
+
+            user.save()
+            return HttpResponse({"200": "message_ok"}, content_type='application/json')
+        except Exception as e:
+            print e
+            return e
+    return HttpResponse(500)
+    
 
 def get_all_patients(request):
     users = User.objects.filter(is_patient=1)
@@ -40,18 +67,19 @@ def get_similar_patients(request,user_id):
     user = get_user_list(user_id)
     mutations = Genetic_info.objects.filter(users=user)
     for m in mutations:
-        similar += m.users.all()
-    print similar
+        similar.append(m.users)
     data = serializers.serialize("json", similar) 
     return HttpResponse(data, content_type='application/json')
 
 def get_mutation_patients(request, chromosome, pos):
-    all_mutations = Genetic_info.objects.get(pos = pos,chr = chromosome)
-    data = serializers.serialize("json", all_mutations.users.all()) 
+    users = []
+    all_mutations = Genetic_info.objects.filter(pos = pos)
+    all_mutations = all_mutations.filter(chr = chromosome)
+    for m in all_mutations:
+        users.append(m.users)
+    data = serializers.serialize("json", users[0]) 
     return HttpResponse(data, content_type='application/json')
-
     
- 
 # def get_single_events(request,user_id):
 #     user = User.objects.filter(pk=user_id)
 #     data = serializers.serialize("json", user)

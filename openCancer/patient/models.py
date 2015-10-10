@@ -24,7 +24,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     def __unicode__(self):
-        return self.name + " " + self.treatment
+        return self.email
     
 class EventType(models.Model):
     name        = models.CharField(max_length=200)
