@@ -43,6 +43,19 @@ def get_similar_patients(request,user_id):
         similar.append(m.users)
     data = serializers.serialize("json", similar) 
     return HttpResponse(data, content_type='application/json')
+
+def get_mutation_patients(request, chromosome, pos):
+    users = []
+    all_mutations = Genetic_info.objects.filter(pos = pos)
+    all_mutations = all_mutations.filter(chr = chromosome)
+    for m in all_mutations:
+        users.append(m.users)
+    print(users)
+    
+    data = serializers.serialize("json", users[0]) 
+    return HttpResponse(data, content_type='application/json')
+
+    
  
 # def get_single_events(request,user_id):
 #     user = User.objects.filter(pk=user_id)
