@@ -2,7 +2,7 @@ from django.shortcuts import render
 import datetime
 import json
 from django.http import HttpResponse
-from patient.models import User
+from patient.models import *
 from django.core import serializers
 
 # def current_datetime(request):

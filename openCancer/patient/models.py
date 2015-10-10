@@ -21,8 +21,6 @@ class User(AbstractBaseUser):
     is_male     = models.BooleanField(default=True)
     age         = models.BooleanField(default=True)
 
-    
-
     USERNAME_FIELD = 'email'
 
     def __unicode__(self):
