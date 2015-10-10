@@ -37,7 +37,7 @@ def get_single_user_mutations(request,user_id):
 
 def get_similar_patients(request,user_id):
     similar = []
-    user = get_user_list(request, user_id)
+    user = get_user_list(user_id)
     mutations = Genetic_info.objects.filter(users=user)
     for m in mutations:
         similar.append(m.users)
