@@ -15,7 +15,7 @@ def get_all_patients(request):
     data = serializers.serialize("json", users)
     return HttpResponse(data, content_type='application/json')
 
-def get_single_user(request,id):
-    users = User.objects.filter(id=1)
-    data = serializers.serialize("json", users)
+def get_single_user(request,user_id):
+    user = User.objects.filter(pk=user_id)
+    data = serializers.serialize("json", user)
     return HttpResponse(data, content_type='application/json')
