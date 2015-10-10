@@ -24,7 +24,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     def __unicode__(self):
-        return self.email
+        return " - ".join([self.name, self.type_cancer, str(self.age), self.treatment, self.ethnicity]) 
     
 class EventType(models.Model):
     name        = models.CharField(max_length=200)
@@ -38,7 +38,10 @@ class Genetic_info(models.Model):
     chr        = models.IntegerField()
     pos        = models.IntegerField()
     users      = models.ManyToManyField(User)
-    gene       = models.CharField(max_length=200) 
+    gene       = models.CharField(max_length=200)
+    
+    def __unicode__(self):
+        return str(self.chr) + ": " + str(self.pos) + " | " + self.gene
 
 # class Choice(models.Model):
 #     question = models.ForeignKey(Question)

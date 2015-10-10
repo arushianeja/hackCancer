@@ -8,11 +8,6 @@ from django.core import serializers
 from django import forms
 
 
-# def current_datetime(request):
-#     now = datetime.datetime.now()
-#     html = "<html><body>It is now %s.</body></html>" % now
-#     return HttpResponse(html)
-
 @csrf_exempt
 def incoming_data(request):
 
@@ -67,19 +62,15 @@ def get_similar_patients(request,user_id):
     user = get_user_list(user_id)
     mutations = Genetic_info.objects.filter(users=user)
     for m in mutations:
-        similar.append(m.users)
+        similar += m.users.all()
     data = serializers.serialize("json", similar) 
     return HttpResponse(data, content_type='application/json')
 
 def get_mutation_patients(request, chromosome, pos):
-    users = []
-    all_mutations = Genetic_info.objects.filter(pos = pos)
-    all_mutations = all_mutations.filter(chr = chromosome)
-    for m in all_mutations:
-        users.append(m.users)
-    data = serializers.serialize("json", users[0]) 
+    all_mutations = Genetic_info.objects.get(pos = pos,chr = chromosome)
+    data = serializers.serialize("json", all_mutations.users.all()) 
     return HttpResponse(data, content_type='application/json')
-    
+
 # def get_single_events(request,user_id):
 #     user = User.objects.filter(pk=user_id)
 #     data = serializers.serialize("json", user)
