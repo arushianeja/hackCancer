@@ -40,19 +40,14 @@ def get_similar_patients(request,user_id):
     user = get_user_list(user_id)
     mutations = Genetic_info.objects.filter(users=user)
     for m in mutations:
-        similar.append(m.users)
+        similar += m.users.all()
+    print similar
     data = serializers.serialize("json", similar) 
     return HttpResponse(data, content_type='application/json')
 
 def get_mutation_patients(request, chromosome, pos):
-    users = []
-    all_mutations = Genetic_info.objects.filter(pos = pos)
-    all_mutations = all_mutations.filter(chr = chromosome)
-    for m in all_mutations:
-        users.append(m.users)
-    print(users)
-    
-    data = serializers.serialize("json", users[0]) 
+    all_mutations = Genetic_info.objects.get(pos = pos,chr = chromosome)
+    data = serializers.serialize("json", all_mutations.users.all()) 
     return HttpResponse(data, content_type='application/json')
 
     
