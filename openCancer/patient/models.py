@@ -17,6 +17,9 @@ class User(AbstractBaseUser):
     expectancy  = models.CharField(max_length=200)
     treatment   = models.CharField(max_length=200)
     side_effects= models.CharField(max_length=200)
+    ethnicity   = models.CharField(max_length=200)
+    is_male     = models.BooleanField(default=True)
+    age         = models.BooleanField(default=True)
 
     
 
