@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 import datetime
+import json
+from django.http import HttpResponse
+from patient.models import User
+from django.core import serializers
 
 # def current_datetime(request):
 #     now = datetime.datetime.now()
@@ -8,4 +11,6 @@ import datetime
 #     return HttpResponse(html)
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    users = User.objects.all()
+    data = serializers.serialize("json", users)
+    return HttpResponse(data, content_type='application/json')
