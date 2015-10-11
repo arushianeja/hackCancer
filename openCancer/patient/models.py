@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.contrib.auth.models import AbstractBaseUser
 
-class User(AbstractBaseUser):
+class User(models.Model):
     """
     Custom user class.
     """
@@ -12,7 +12,7 @@ class User(AbstractBaseUser):
     joined      = models.DateTimeField(auto_now_add=True)
     is_active   = models.BooleanField(default=True)
     is_admin    = models.BooleanField(default=False)
-    is_patient  = models.BooleanField(default=False) 
+    is_patient  = models.BooleanField(default=False)
     type_cancer = models.CharField(max_length=200)
     expectancy  = models.CharField(max_length=200)
     treatment   = models.CharField(max_length=200)
@@ -24,8 +24,8 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     def __unicode__(self):
-        return " - ".join([self.name, self.type_cancer, str(self.age), self.treatment, self.ethnicity]) 
-    
+        return " - ".join([self.name, self.type_cancer, str(self.age), self.treatment, self.ethnicity])
+
 class EventType(models.Model):
     name        = models.CharField(max_length=200)
 
@@ -33,13 +33,13 @@ class Event(models.Model):
     time        = models.DateTimeField(auto_now_add=True)
     type        = models.ForeignKey(EventType)
     user        = models.ForeignKey(User)
-    
+
 class Genetic_info(models.Model):
     chr        = models.IntegerField()
     pos        = models.IntegerField()
     users      = models.ManyToManyField(User)
     gene       = models.CharField(max_length=200)
-    
+
     def __unicode__(self):
         return str(self.chr) + ": " + str(self.pos) + " | " + self.gene
 

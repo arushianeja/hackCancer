@@ -1,8 +1,8 @@
 from random import randint
-from patient.models import *
+from models import *
 import random
 
-base = "/home/mkallberg/workspace/hackaton/hackCancer/openCancer/patient/"
+base = "/Users/gabi/Coding/GitHub/hackCancer/openCancer/patient/"
 names = open(base + 'name_data.txt')
 genes = open(base + 'list_of_genes.txt')
 
@@ -11,7 +11,7 @@ g = {}
 
 for l in names.readlines():
     patients.append(l.strip())
-    
+
 
 for gene in genes.readlines():
     k = gene.strip().replace('\xc2\xa0','')
@@ -35,17 +35,17 @@ can = ["Breast","Lung"]
 
 users = [u for u in User.objects.all()]
 
-# class Genetic_info(models.Model):
-#     chr        = models.IntegerField()
-#     pos        = models.IntegerField()
-#     users      = models.ManyToManyField(User)
-#     gene       = models.CharField(max_length=200)
+class Genetic_info(models.Model):
+    chr        = models.IntegerField()
+    pos        = models.IntegerField()
+    users      = models.ManyToManyField(User)
+    gene       = models.CharField(max_length=200)
 
 for n in random.sample(users,10):
     print n
 
 for k in g.keys():
-    for case in g[k]: 
+    for case in g[k]:
         gg = Genetic_info(chr=case[0], pos=case[1],gene=k)
         print gg
         gg.save()
